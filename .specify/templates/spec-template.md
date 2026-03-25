@@ -80,6 +80,9 @@
 <!--
   ACTION REQUIRED: The content in this section represents placeholders.
   Fill them out with the right functional requirements.
+  Every requirement MUST be traceable to a user scenario and stay free of
+  implementation detail unless the requirement itself is about an explicit
+  constraint already validated.
 -->
 
 ### Functional Requirements
@@ -100,6 +103,26 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
+## Scope Boundaries *(mandatory)*
+
+<!--
+  ACTION REQUIRED: Make scope decisions explicit.
+  Name what is in scope now, what is explicitly out of scope, and what is
+  intentionally deferred pending validation.
+-->
+
+### In Scope
+
+- [Explicitly approved item]
+
+### Out of Scope
+
+- [Explicitly excluded item]
+
+### Deferred / Needs Validation
+
+- [Idea, risk, or assumption that must be validated before entering scope]
+
 ## Success Criteria *(mandatory)*
 
 <!--
@@ -114,15 +137,17 @@
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
 
-## Assumptions
+## Assumptions & Open Questions
 
 <!--
   ACTION REQUIRED: The content in this section represents placeholders.
   Fill them out with the right assumptions based on reasonable defaults
   chosen when the feature description did not specify certain details.
+  Keep uncertainties visible rather than hiding them in the wording above.
 -->
 
 - [Assumption about target users, e.g., "Users have stable internet connectivity"]
 - [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
 - [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
 - [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+- [Open question that blocks or materially changes scope, if any]

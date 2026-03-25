@@ -7,7 +7,8 @@
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+[Extract from feature spec: primary requirement, explicit scope boundary, key
+assumptions, and validation approach]
 
 ## Technical Context
 
@@ -31,7 +32,19 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Reliability first: assumptions, data constraints, and traceability needs are explicit
+- [ ] Simplicity: the simplest workable approach is selected or extra complexity is justified
+- [ ] Progressive validation: major hypotheses have a planned checkpoint before broader build-out
+- [ ] Scope discipline: out-of-scope items and deferred ideas are named explicitly
+- [ ] Explicit decisions: important trade-offs are recorded with rationale
+- [ ] Testability: verification approach is defined, manual first if needed, then more reproducible when justified
+- [ ] Documentation: impacted docs and decision records are identified before implementation
+
+## Decision Log
+
+| Decision | Status | Rationale |
+|----------|--------|-----------|
+| [Key project or feature decision] | [Proposed/Accepted/Deferred] | [Why this is the current choice] |
 
 ## Project Structure
 
