@@ -51,19 +51,37 @@ Jeu de données récupéré depuis la source F1 avant transformation métier.
 
 Jeu de données transformé et contrôlé, prêt pour un rendu déterministe.
 
+### Noyau stable du MVP
+
+Le MVP verrouille maintenant un noyau commun minimal pour toutes les visualisations. Ce noyau doit rester stable d'un format à l'autre et d'une itération à l'autre.
+
+- `core_render_fields`: champs indispensables pour dessiner la visualisation; obligatoires dès le MVP.
+- `tooltip_fields`: structure prévue dès maintenant pour les enrichissements de survol; enrichissement progressif ensuite.
+- `presentation_fields`: structure prévue dès maintenant pour les enrichissements de présentation; enrichissement progressif ensuite.
+
+L'objectif est de stabiliser le socle de rendu et de traçabilité sans figer trop tôt l'ensemble des métriques secondaires, tooltips enrichis ou conventions de présentation.
+
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | `validated_dataset_id` | string | Yes | Identifiant du lot prêt à rendre |
 | `request_id` | string | Yes | Référence à `VisualizationRequest` |
+| `source_dataset_id` | string | Yes | Référence au lot source utilisé pour construire ce dataset validé |
 | `chart_type` | enum | Yes | Format final visé |
-| `series_definition` | object | Yes | Définition des lignes ou cellules à afficher |
-| `ordered_points` | table reference | Yes | Données transformées pour le rendu |
+| `traceability_keys` | object | Yes | Identifiants et clés permettant de relier demande, source, couverture et bundle |
+| `core_render_fields` | table reference | Yes | Champs minimaux obligatoires pour dessiner la visualisation principale |
+| `tooltip_fields` | object | Yes | Structure prévue pour les données de survol; contenu minimal possible au MVP, enrichissement extensible ensuite |
+| `presentation_fields` | object | Yes | Structure prévue pour labels, couleurs et autres aides de présentation; contenu minimal possible au MVP, enrichissement extensible ensuite |
+| `series_definition` | object | Yes | Définition des lignes ou cellules à afficher à partir du noyau de rendu |
 | `coverage_summary` | object | Yes | Résumé de couverture et éventuelles exclusions |
+| `provenance` | object | Yes | Provenance de la donnée, source chiffrée retenue et contexte de couverture |
 | `validation_status` | enum | Yes | `ready`, `limited`, `rejected` |
 | `validation_notes` | list | Yes | Hypothèses, limites et points de vigilance |
 
 ### Validation Rules
 
+- `core_render_fields` doit suffire à produire la visualisation sans dépendre d'un enrichissement ultérieur.
+- `tooltip_fields` et `presentation_fields` doivent exister comme structures stables, même si leur contenu reste minimal au MVP.
+- L'enrichissement futur de `tooltip_fields` et `presentation_fields` ne doit pas casser le socle défini par `core_render_fields`, `traceability_keys`, `provenance` et `validation_notes`.
 - Le statut `ready` n'est autorisé que si les données et le cadrage sont cohérents.
 - Le statut `limited` exige des notes explicites sur la limite restante.
 - Le statut `rejected` bloque toute génération de visualisation présentée comme fiable.
@@ -82,11 +100,14 @@ Ensemble des artefacts livrés au créateur pour usage éditorial, reprise et in
 | `dataset_export` | file reference | Yes | Export tabulaire des données utilisées |
 | `manifest` | file reference | Yes | Fichier de synthèse exploitable |
 | `verification_notes` | file reference | Yes | Notes de limites et hypothèses |
+| `core_schema_version` | string | Yes | Version du noyau stable du bundle et du dataset validé |
 | `created_at` | datetime | Yes | Horodatage d'export |
 
 ### Validation Rules
 
 - Aucun bundle réussi ne peut être publié ou intégré sans `manifest`, `dataset_export`, `verification_notes` et `embed_export`.
+- Le bundle doit exposer un noyau stable comprenant au minimum les clés de traçabilité, la provenance, les notes de validation et les champs de rendu principaux.
+- Le bundle peut enrichir ensuite les données de tooltip et de présentation sans casser sa structure de base.
 - Le bundle doit référencer les mêmes hypothèses et limites que le dataset validé.
 
 ## Relationships

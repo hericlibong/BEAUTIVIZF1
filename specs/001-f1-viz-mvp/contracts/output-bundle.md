@@ -4,6 +4,8 @@
 
 Définir le bundle minimal que chaque génération réussie doit produire pour être considérée comme exploitable, vérifiable, réutilisable et intégrable sur le web.
 
+Le contrat verrouille un noyau stable pour le MVP et réserve explicitement l'enrichissement futur des données de survol et de présentation.
+
 ## Bundle Contents
 
 | File | Required | Purpose |
@@ -22,6 +24,17 @@ Définir le bundle minimal que chaque génération réussie doit produire pour �
 - `dataset.csv` doit être suffisant pour vérifier la cohérence du rendu sans réinterroger la source.
 - L'artefact d'embed doit permettre l'intégration web sans exiger de plateforme de publication dédiée.
 - Le bundle doit rester exploitable même si NotebookLM/MCP est indisponible, car cet outil n'est pas une dépendance du pipeline de rendu.
+
+## Stable Data Expectations
+
+Le bundle doit exposer un socle commun minimal, stable et traçable pour les deux formats du MVP.
+
+- `core_render_fields`: obligatoires; ils portent les champs strictement nécessaires au dessin principal de la visualisation.
+- `tooltip_fields`: structure prévue dès maintenant; leur contenu peut rester minimal au MVP puis être enrichi ensuite.
+- `presentation_fields`: structure prévue dès maintenant; leur contenu peut rester minimal au MVP puis être enrichi ensuite.
+- `traceability_keys`, `provenance` et `validation_notes`: obligatoires pour garder la sortie vérifiable et réutilisable.
+
+L'enrichissement futur de `tooltip_fields` et `presentation_fields` est autorisé tant qu'il ne casse pas ce socle minimal ni la structure stable du bundle.
 
 ## Failure Contract
 

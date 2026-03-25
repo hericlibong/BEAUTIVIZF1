@@ -5,7 +5,7 @@
 
 ## Summary
 
-Le MVP reste strictement limité à deux sorties: une heatmap et une line chart race montrant la progression des pilotes ou des équipes au fil des Grands Prix. Le plan retient une architecture locale simple en Python, organisée en quatre couches explicites: récupération des données, validation/transformation, bundle de sortie exploitable, puis rendu de visualisation. Le rendu cible du MVP est basé sur D3.js pour produire une visualisation web et une sortie d'intégration web explicite de type embed, sans introduire de plateforme complète. La validation est progressive: validation de la demande, vérification de complétude des données, contrôle du bundle produit, puis revue visuelle ciblée. NotebookLM/MCP reste une couche documentaire et de recherche, utile pour la documentation FastF1, les champs utiles et les références visuelles, mais jamais le moteur métier, jamais la source principale des données chiffrées et jamais une dépendance critique du pipeline de rendu.
+Le MVP reste strictement limité à deux sorties: une heatmap et une line chart race montrant la progression des pilotes ou des équipes au fil des Grands Prix. Le plan retient une architecture locale simple en Python, organisée en quatre couches explicites: récupération des données, validation/transformation, bundle de sortie exploitable, puis rendu de visualisation. Le rendu cible du MVP est basé sur D3.js pour produire une visualisation web et une sortie d'intégration web explicite de type embed, sans introduire de plateforme complète. Le modèle de données du MVP verrouille un noyau commun minimal et stable pour le rendu, la traçabilité, la provenance et les notes de validation, tout en réservant explicitement l'enrichissement futur des `tooltip_fields` et `presentation_fields`. La validation est progressive: validation de la demande, vérification de complétude des données, contrôle du bundle produit, puis revue visuelle ciblée. NotebookLM/MCP reste une couche documentaire et de recherche, utile pour la documentation FastF1, les champs utiles et les références visuelles, mais jamais le moteur métier, jamais la source principale des données chiffrées et jamais une dépendance critique du pipeline de rendu.
 
 ## Technical Context
 
@@ -17,7 +17,7 @@ Le MVP reste strictement limité à deux sorties: une heatmap et une line chart 
 **Target Platform**: environnement local de production éditoriale sur machine développeur, avec sorties réutilisables sur le web et intégrables par embed  
 **Project Type**: package Python avec point d'entrée CLI pour générer une visualisation par demande  
 **Performance Goals**: produire un bundle exploitable pour une demande dans le périmètre en moins de 30 secondes quand les données requises sont déjà disponibles localement; refuser une demande invalide en moins de 5 secondes  
-**Constraints**: fiabilité avant effet visuel; une seule visualisation par demande; deux formats maximum; refus explicite des demandes ambiguës ou non vérifiables; NotebookLM/MCP limité à la documentation et à la recherche documentaire; aucune dépendance critique du rendu à NotebookLM/MCP  
+**Constraints**: fiabilité avant effet visuel; une seule visualisation par demande; deux formats maximum; refus explicite des demandes ambiguës ou non vérifiables; noyau de données commun stable pour le MVP; enrichissement progressif des tooltips et des données de présentation sans rupture du socle; NotebookLM/MCP limité à la documentation et à la recherche documentaire; aucune dépendance critique du rendu à NotebookLM/MCP  
 **Scale/Scope**: un seul utilisateur, une demande à la fois, périmètre de données limité à une course ou à une séquence bornée de Grands Prix, comparaison sur pilotes ou équipes uniquement
 
 ## Constitution Check
@@ -51,6 +51,7 @@ Le MVP reste strictement limité à deux sorties: une heatmap et une line chart 
 | Utiliser un package Python local avec un point d'entrée CLI | Accepted | Couvre le besoin du créateur sans introduire de plateforme ou service hors MVP |
 | Encapsuler la récupération F1 derrière un provider dédié | Accepted | Isole la dépendance aux données et protège la suite du pipeline contre les changements de source |
 | Séparer validation, transformation, bundle de sortie et rendu | Accepted | Rend le flux lisible, testable et cohérent avec la constitution |
+| Verrouiller un noyau commun minimal de données pour le MVP | Accepted | Stabilise le rendu, la traçabilité et le bundle sans figer trop tôt le modèle enrichi complet |
 | Produire un bundle de sortie standardisé (`manifest`, `dataset`, `notes`, `visualisation`, `embed`) | Accepted | Garantit réutilisabilité, vérifiabilité, intégration web et support du storytelling |
 | Utiliser D3.js comme renderer cible du MVP | Accepted | Aligne le rendu avec l'intention initiale du projet et garde une sortie web intégrable sans plateforme complète |
 | Utiliser NotebookLM/MCP uniquement comme couche documentaire et de recherche | Accepted | Permet d'exploiter la documentation FastF1, les champs utiles et les références visuelles sans déplacer la logique métier ni la source chiffrée hors du projet |
