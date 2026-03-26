@@ -1,7 +1,7 @@
-# Specification Quality Checklist: MVP initial de datavisualisation F1
+# Specification Quality Checklist: Chatbot simple de datavisualisation F1
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning  
-**Created**: 2026-03-25  
+**Created**: 2026-03-26  
 **Feature**: [spec.md](../spec.md)
 
 ## Content Quality
@@ -33,3 +33,4 @@
 
 - Validation completed in one iteration. No blocking clarification markers remain.
 - Open questions recorded in the specification do not block planning and can be refined during `/speckit.clarify` if needed.
+- The product framing changed materially: `plan.md` and `tasks.md` must be regenerated from this rewritten specification.

@@ -1,24 +1,24 @@
-# Implementation Plan: BEAUTIVIZF1 MVP initial de datavisualisation F1
+# Implementation Plan: Chatbot simple de datavisualisation F1
 
-**Branch**: `001-f1-viz-mvp` | **Date**: 2026-03-25 | **Spec**: [/home/hericdev/BEAUTIVIZF1/specs/001-f1-viz-mvp/spec.md](/home/hericdev/BEAUTIVIZF1/specs/001-f1-viz-mvp/spec.md)
+**Branch**: `001-f1-viz-mvp` | **Date**: 2026-03-26 | **Spec**: [/home/hericdev/BEAUTIVIZF1/specs/001-f1-viz-mvp/spec.md](/home/hericdev/BEAUTIVIZF1/specs/001-f1-viz-mvp/spec.md)
 **Input**: Feature specification from `/specs/001-f1-viz-mvp/spec.md`
 
 ## Summary
 
-Le MVP reste strictement limité à deux sorties: une heatmap et une line chart race montrant la progression des pilotes ou des équipes au fil des Grands Prix. Le plan retient une architecture locale simple en Python, organisée en quatre couches explicites: récupération des données, validation/transformation, bundle de sortie exploitable, puis rendu de visualisation. Le rendu cible du MVP est basé sur D3.js pour produire une visualisation web et une sortie d'intégration web explicite de type embed, sans introduire de plateforme complète. Le modèle de données du MVP verrouille un noyau commun minimal et stable pour le rendu, la traçabilité, la provenance et les notes de validation, tout en réservant explicitement l'enrichissement futur des `tooltip_fields` et `presentation_fields`. La validation est progressive: validation de la demande, vérification de complétude des données, contrôle du bundle produit, puis revue visuelle ciblée. NotebookLM/MCP reste une couche documentaire et de recherche, utile pour la documentation FastF1, les champs utiles et les références visuelles, mais jamais le moteur métier, jamais la source principale des données chiffrées et jamais une dépendance critique du pipeline de rendu.
+Le MVP de BEAUTIVIZF1 est un chatbot simple de datavisualisation F1. Le flux validé est désormais: l'utilisateur exprime un besoin analytique ou éditorial en langage naturel, le chatbot interprète ce besoin, rappelle que la V1 ne sait produire qu'une heatmap ou une line chart race, attend un choix explicite de l'utilisateur, puis seulement lance le pipeline de données F1 et la génération du résultat. L'architecture retenue reste volontairement simple, avec une séparation claire entre interface conversationnelle, interprétation, données, rendu D3.js et sortie. Le résultat attendu comprend une visualisation web, une sortie embed explicite et un bundle minimal de vérification. NotebookLM/MCP reste une couche documentaire et contextuelle uniquement.
 
 ## Technical Context
 
 **Language/Version**: Python 3.11  
 **Primary Python Dependencies**: fastf1, pandas  
 **Rendering Dependency**: d3.js  
-**Storage**: fichiers locaux versionnables ou régénérables pour les artefacts, avec cache de données local hors logique métier  
-**Testing**: pytest pour les validations reproductibles, complété par une revue manuelle des sorties visuelles  
-**Target Platform**: environnement local de production éditoriale sur machine développeur, avec sorties réutilisables sur le web et intégrables par embed  
-**Project Type**: package Python avec point d'entrée CLI pour générer une visualisation par demande  
-**Performance Goals**: produire un bundle exploitable pour une demande dans le périmètre en moins de 30 secondes quand les données requises sont déjà disponibles localement; refuser une demande invalide en moins de 5 secondes  
-**Constraints**: fiabilité avant effet visuel; une seule visualisation par demande; deux formats maximum; refus explicite des demandes ambiguës ou non vérifiables; noyau de données commun stable pour le MVP; enrichissement progressif des tooltips et des données de présentation sans rupture du socle; NotebookLM/MCP limité à la documentation et à la recherche documentaire; aucune dépendance critique du rendu à NotebookLM/MCP  
-**Scale/Scope**: un seul utilisateur, une demande à la fois, périmètre de données limité à une course ou à une séquence bornée de Grands Prix, comparaison sur pilotes ou équipes uniquement
+**Storage**: fichiers locaux pour les artefacts de sortie, les exports de vérification et le cache de données hors logique métier  
+**Testing**: pytest pour les validations reproductibles, complété par des vérifications manuelles du flux conversationnel, du rendu et du bundle  
+**Target Platform**: application locale simple avec interface conversationnelle légère et sorties web embeddables  
+**Project Type**: application Python avec couche conversationnelle simple, pipeline de données local et rendu web exportable  
+**Performance Goals**: interpréter une demande et proposer les deux formats du MVP ou une clarification simple en moins de 5 secondes; produire un bundle complet en moins de 30 secondes quand les données requises sont déjà disponibles localement  
+**Constraints**: une demande correspond à une seule visualisation; aucun rendu avant choix explicite du format; deux formats uniquement; pas de plateforme complète de publication; NotebookLM/MCP jamais moteur métier ni source principale des données chiffrées  
+**Scale/Scope**: un seul utilisateur, conversation courte et guidée, une analyse à la fois, périmètre limité à la heatmap et à la line chart race
 
 ## Constitution Check
 
@@ -26,37 +26,36 @@ Le MVP reste strictement limité à deux sorties: une heatmap et une line chart 
 
 ### Pre-Research Gate
 
-- [x] Reliability first: assumptions, data constraints, and traceability needs are explicit
-- [x] Simplicity: the simplest workable approach is selected or extra complexity is justified
-- [x] Progressive validation: major hypotheses have a planned checkpoint before broader build-out
-- [x] Scope discipline: out-of-scope items and deferred ideas are named explicitly
-- [x] Explicit decisions: important trade-offs are recorded with rationale
-- [x] Testability: verification approach is defined, manual first if needed, then more reproducible when justified
-- [x] Documentation: impacted docs and decision records are identified before implementation
+- [x] Reliability first: la provenance, le bundle de vérification et le refus explicite des demandes insuffisantes sont prévus dès l'entrée conversationnelle
+- [x] Simplicity: le MVP reste un chatbot simple sans agent complexe, sans plateforme de publication et sans formats additionnels
+- [x] Progressive validation: le flux conversation -> interprétation -> choix -> génération prévoit des points de contrôle clairs avant la production
+- [x] Scope discipline: seuls les deux formats validés et le bundle minimal embeddable entrent dans le périmètre actif
+- [x] Explicit decisions: les arbitrages sur le choix explicite du format, le rôle de D3.js et le statut non critique de NotebookLM/MCP sont consignés
+- [x] Testability: le plan prévoit des vérifications sur l'interprétation, le choix du format, le bundle et l'embed
+- [x] Documentation: `research.md`, `data-model.md`, `contracts/`, `quickstart.md` et `AGENTS.md` sont identifiés avant implémentation
 
 ### Post-Design Re-check
 
-- [x] Reliability first: la séparation provider -> validation -> transformation -> bundle -> rendu garde la traçabilité et permet les refus explicites
-- [x] Simplicity: une seule application Python locale, sans service web ni base de données, couvre le besoin MVP
-- [x] Progressive validation: le quickstart et les contrats prévoient des checkpoints avant tout élargissement de périmètre
-- [x] Scope discipline: aucun format, profil utilisateur ou canal de publication hors MVP n'entre dans le design
-- [x] Explicit decisions: les arbitrages techniques retenus et différés sont consignés dans `research.md`
-- [x] Testability: les contrats, le modèle de données et le quickstart définissent des vérifications manuelles et automatisables
-- [x] Documentation: `research.md`, `data-model.md`, `contracts/`, `quickstart.md` et `AGENTS.md` sont identifiés comme artefacts à maintenir
+- [x] Reliability first: la séparation conversation -> interprétation -> données -> rendu -> sortie renforce la traçabilité et les refus explicites
+- [x] Simplicity: l'architecture ne rajoute ni agent multi-étapes ni plateforme web complète
+- [x] Progressive validation: les contrats et le quickstart couvrent le choix explicite du format avant génération
+- [x] Scope discipline: aucun format ou enrichissement hors MVP n'entre dans les artefacts régénérés
+- [x] Explicit decisions: les décisions techniques importantes sont réécrites dans `research.md`
+- [x] Testability: le modèle de données, les contrats et le quickstart rendent le nouveau flux testable de bout en bout
+- [x] Documentation: tous les artefacts de planification nécessaires ont été réalignés sur la spec actuelle
 
 ## Decision Log
 
 | Decision | Status | Rationale |
 |----------|--------|-----------|
-| Utiliser un package Python local avec un point d'entrée CLI | Accepted | Couvre le besoin du créateur sans introduire de plateforme ou service hors MVP |
-| Encapsuler la récupération F1 derrière un provider dédié | Accepted | Isole la dépendance aux données et protège la suite du pipeline contre les changements de source |
-| Séparer validation, transformation, bundle de sortie et rendu | Accepted | Rend le flux lisible, testable et cohérent avec la constitution |
-| Verrouiller un noyau commun minimal de données pour le MVP | Accepted | Stabilise le rendu, la traçabilité et le bundle sans figer trop tôt le modèle enrichi complet |
-| Produire un bundle de sortie standardisé (`manifest`, `dataset`, `notes`, `visualisation`, `embed`) | Accepted | Garantit réutilisabilité, vérifiabilité, intégration web et support du storytelling |
-| Utiliser D3.js comme renderer cible du MVP | Accepted | Aligne le rendu avec l'intention initiale du projet et garde une sortie web intégrable sans plateforme complète |
-| Utiliser NotebookLM/MCP uniquement comme couche documentaire et de recherche | Accepted | Permet d'exploiter la documentation FastF1, les champs utiles et les références visuelles sans déplacer la logique métier ni la source chiffrée hors du projet |
-| Garder la sortie web limitée à des artefacts exportés et intégrables, sans plateforme de publication | Accepted | Respecte le MVP et limite les dépendances |
-| Standardiser plus tard les gabarits éditoriaux avancés et la publication | Deferred | Important pour la suite, mais non nécessaire pour produire les deux premiers formats du MVP |
+| Conserver un chatbot simple comme point d'entrée produit | Accepted | Reflète la spec validée sans dériver vers une expérience conversationnelle complexe |
+| Séparer l'interprétation du besoin utilisateur du choix de format | Accepted | Le produit ne doit pas supposer le format à la place de l'utilisateur |
+| Exiger un choix explicite entre heatmap et line chart race avant toute génération | Accepted | Verrouille le flux MVP et supprime l'ambiguïté produit précédente |
+| Conserver Python comme cœur du pipeline de données F1 | Accepted | Garde une architecture lisible et adaptée à la récupération, la validation et la transformation des données |
+| Utiliser D3.js comme renderer cible | Accepted | Maintient une sortie web exploitable et une intégration embed explicite sans plateforme complète |
+| Produire un bundle minimal de vérification avec sortie embed | Accepted | Assure la réutilisabilité et la traçabilité attendues par le produit |
+| Limiter NotebookLM/MCP à une couche documentaire et contextuelle | Accepted | Préserve la compréhension documentaire sans déplacer la logique métier ni la donnée chiffrée hors du projet |
+| Reporter l'enrichissement avancé de la conversation, des tooltips et des métadonnées de présentation | Deferred | Utile plus tard, mais hors périmètre du MVP validé |
 
 ## Project Structure
 
@@ -69,8 +68,8 @@ specs/001-f1-viz-mvp/
 ├── data-model.md
 ├── quickstart.md
 ├── contracts/
-│   ├── output-bundle.md
-│   └── visualization-request.md
+│   ├── conversation-request.md
+│   └── output-bundle.md
 └── tasks.md
 ```
 
@@ -79,25 +78,29 @@ specs/001-f1-viz-mvp/
 ```text
 src/
 └── beautivizf1/
-    ├── cli/
-    │   └── generate_visualization.py
+    ├── interpretation/
+    │   └── intent_parser.py
     ├── domain/
-    │   ├── artifact_bundle.py
+    │   ├── conversation_request.py
+    │   ├── visualization_intent.py
+    │   ├── format_selection.py
     │   ├── source_dataset.py
-    │   └── visualization_request.py
+    │   ├── validated_visualization_dataset.py
+    │   └── artifact_bundle.py
     ├── data_sources/
-    │   └── fastf1_provider.py
+    │   └── f1_provider.py
     ├── validation/
-    │   ├── data_rules.py
-    │   └── request_rules.py
+    │   ├── request_rules.py
+    │   └── data_rules.py
     ├── transforms/
     │   ├── heatmap_transform.py
     │   └── line_chart_race_transform.py
+    ├── renderers/
+    │   └── d3_renderer.py
     ├── outputs/
     │   ├── bundle_writer.py
     │   └── notes_writer.py
-    ├── renderers/
-    │   └── d3_renderer.py
+    ├── chat.py
     └── services/
         └── visualization_service.py
 
@@ -111,8 +114,8 @@ artifacts/
 └── .gitkeep
 ```
 
-**Structure Decision**: structure monoprojet en package Python. `data_sources/` porte uniquement la récupération, `validation/` et `transforms/` portent les contrôles et remises en forme, `outputs/` assemble la sortie exploitable et l'artefact d'embed, `renderers/` génère la visualisation D3.js. `services/` orchestre un flux unique de bout en bout sans introduire de couches supplémentaires.
+**Structure Decision**: le projet reste un monoprojet Python. La couche conversationnelle est volontairement légère pour la V1: `chat.py` suffit pour recevoir la demande, présenter les deux formats disponibles, recueillir le choix explicite et transmettre une demande cadrée au pipeline. `interpretation/` traduit le besoin exprimé en intention exploitable. `data_sources/`, `validation/` et `transforms/` prennent en charge le pipeline F1 après le choix explicite du format. `renderers/` produit la visualisation D3.js. `outputs/` assemble l'embed explicite et le bundle minimal. `services/visualization_service.py` orchestre la génération sans multiplier les orchestrateurs ni transformer le chatbot simple en mini-architecture trop riche.
 
 ## Complexity Tracking
 
-Aucune dérogation à la constitution n'est requise à ce stade. Les éléments différés restent hors du périmètre actif du MVP.
+Aucune dérogation à la constitution n'est requise. La complexité volontairement exclue du MVP reste différée: conversation avancée, autres formats, publication complète, enrichissements avancés de présentation.

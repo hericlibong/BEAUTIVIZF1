@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Définir le bundle minimal que chaque génération réussie doit produire pour être considérée comme exploitable, vérifiable, réutilisable et intégrable sur le web.
+Définir le bundle minimal que chaque génération réussie doit produire après le flux conversationnel complet: interprétation du besoin, proposition des formats du MVP, choix explicite du format, génération.
 
 Le contrat verrouille un noyau stable pour le MVP et réserve explicitement l'enrichissement futur des données de survol et de présentation.
 
@@ -19,6 +19,7 @@ Le contrat verrouille un noyau stable pour le MVP et réserve explicitement l'en
 ## Bundle Guarantees
 
 - Tous les fichiers doivent se rapporter au même `request_id`.
+- Le bundle doit pouvoir être relié au choix explicite du format effectué avant la génération.
 - Le `manifest.json` doit rappeler le `chart_type`, la couverture analysée et le statut de validation.
 - `notes.md` doit rendre explicites les hypothèses et limites qui affectent la lecture.
 - `dataset.csv` doit être suffisant pour vérifier la cohérence du rendu sans réinterroger la source.
