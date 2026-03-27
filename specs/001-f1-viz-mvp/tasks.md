@@ -20,10 +20,10 @@
 
 ### Block 1: Structure du projet et outillage minimal
 
-- [ ] T001 Create project package markers in `src/beautivizf1/__init__.py`, `tests/__init__.py`, and `artifacts/.gitkeep`
-- [ ] T002 Initialize project metadata and dependencies in `pyproject.toml`
-- [ ] T003 Configure pytest and shared test bootstrapping in `pyproject.toml` and `tests/conftest.py`
-- [ ] T004 [P] Create minimal documentation scaffolding in `docs/usage/README.md` and `docs/validation/README.md`
+- [X] T001 Create project package markers in `src/beautivizf1/__init__.py`, `tests/__init__.py`, and `artifacts/.gitkeep`
+- [X] T002 Initialize project metadata and dependencies in `pyproject.toml`
+- [X] T003 Configure pytest and shared test bootstrapping in `pyproject.toml` and `tests/conftest.py`
+- [X] T004 [P] Create minimal documentation scaffolding in `docs/usage/README.md` and `docs/validation/README.md`
 
 ---
 
