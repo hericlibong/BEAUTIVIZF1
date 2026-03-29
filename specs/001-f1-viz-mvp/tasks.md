@@ -38,17 +38,17 @@
 - [X] T005 Create the conversation request and visualization intent domain models in `src/beautivizf1/domain/conversation_request.py` and `src/beautivizf1/domain/visualization_intent.py`
 - [X] T006 [P] Create the format selection and artifact bundle domain models in `src/beautivizf1/domain/format_selection.py` and `src/beautivizf1/domain/artifact_bundle.py`
 - [X] T007 [P] Create the source and validated dataset domain models in `src/beautivizf1/domain/source_dataset.py` and `src/beautivizf1/domain/validated_visualization_dataset.py`
-- [ ] T008 Implement the generic F1 provider interface in `src/beautivizf1/data_sources/f1_provider.py`
-- [ ] T009 Implement shared request validation rules in `src/beautivizf1/validation/request_rules.py`
-- [ ] T010 [P] Implement shared data validation and provenance rules in `src/beautivizf1/validation/data_rules.py`
-- [ ] T011 [P] Create bundle and notes writer skeletons in `src/beautivizf1/outputs/bundle_writer.py` and `src/beautivizf1/outputs/notes_writer.py`
-- [ ] T012 Implement the main generation orchestrator skeleton in `src/beautivizf1/services/visualization_service.py`
+- [X] T008 Implement the generic F1 provider interface in `src/beautivizf1/data_sources/f1_provider.py`
+- [X] T009 Implement shared request validation rules in `src/beautivizf1/validation/request_rules.py`
+- [X] T010 [P] Implement shared data validation and provenance rules in `src/beautivizf1/validation/data_rules.py`
+- [X] T011 [P] Create bundle and notes writer skeletons in `src/beautivizf1/outputs/bundle_writer.py` and `src/beautivizf1/outputs/notes_writer.py`
+- [X] T012 Implement the main generation orchestrator skeleton in `src/beautivizf1/services/visualization_service.py`
 
 ### Foundational verification
 
 - [X] T013 [P] Add contract tests for conversation request and format selection in `tests/contract/test_conversation_request_contract.py`
 - [X] T014 [P] Add contract tests for the output bundle in `tests/contract/test_output_bundle_contract.py`
-- [ ] T015 [P] Add unit tests for shared request and data rules in `tests/unit/test_request_rules.py` and `tests/unit/test_data_rules.py`
+- [X] T015 [P] Add unit tests for shared request and data rules in `tests/unit/test_request_rules.py` and `tests/unit/test_data_rules.py`
 - [X] T016 [P] Add shared fixtures for conversation requests and format selections in `tests/fixtures/requests/natural_language_need.json` and `tests/fixtures/selections/explicit_choice.json`
 
 **Checkpoint**: Le socle commun est prêt. Les user stories peuvent maintenant commencer.
