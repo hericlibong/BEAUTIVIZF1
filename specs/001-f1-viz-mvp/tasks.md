@@ -121,11 +121,11 @@
 
 ### Block 6: Récupération des données F1
 
-- [ ] T031 [US3] Implement source retrieval after explicit format choice in `src/beautivizf1/data_sources/f1_provider.py` and `src/beautivizf1/services/visualization_service.py`
+- [X] T031 [US3] Implement source retrieval after explicit format choice in `src/beautivizf1/data_sources/f1_provider.py` and `src/beautivizf1/services/visualization_service.py`
 
 ### Block 7: Validation des demandes et des données
 
-- [ ] T032 [US3] Implement validated dataset assembly and provenance checks in `src/beautivizf1/validation/data_rules.py` and `src/beautivizf1/services/visualization_service.py`
+- [X] T032 [US3] Implement validated dataset assembly and provenance checks in `src/beautivizf1/validation/data_rules.py` and `src/beautivizf1/services/visualization_service.py`
 
 ### Block 8: Transformations heatmap
 

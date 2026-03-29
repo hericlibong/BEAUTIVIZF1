@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 
+from beautivizf1.domain.format_selection import FormatSelection
 from beautivizf1.domain.source_dataset import SourceDataset
 from beautivizf1.domain.validated_visualization_dataset import (
     ValidatedVisualizationDataset,
@@ -106,6 +107,47 @@ def validate_validated_visualization_dataset(
     return DataValidationResult(status=ValidationStatus.READY, notes=list(dataset.validation_notes))
 
 
+def assemble_validated_visualization_dataset(
+    *,
+    validated_dataset_id: str,
+    selection: FormatSelection,
+    source_dataset: SourceDataset,
+) -> ValidatedVisualizationDataset:
+    source_validation = validate_source_dataset(source_dataset)
+    validation_notes = list(source_validation.notes)
+
+    if source_validation.status is ValidationStatus.READY:
+        validation_notes = ["Coverage confirmed for requested scope."]
+    elif not validation_notes:
+        validation_notes = ["The source dataset is usable with limited coverage."]
+
+    return ValidatedVisualizationDataset(
+        validated_dataset_id=validated_dataset_id,
+        selection_id=selection.selection_id,
+        source_dataset_id=source_dataset.dataset_id,
+        chosen_format=selection.chosen_format,
+        traceability_keys={
+            "intent_id": selection.intent_id,
+            "selection_id": selection.selection_id,
+            "source_dataset_id": source_dataset.dataset_id,
+            "season": source_dataset.season,
+        },
+        core_render_fields=source_dataset.records.copy(),
+        tooltip_fields={},
+        presentation_fields={},
+        coverage_summary=_build_coverage_summary(source_dataset, source_validation.status),
+        provenance={
+            "source_name": source_dataset.source_name,
+            "season": source_dataset.season,
+            "covered_rounds": list(source_dataset.covered_rounds or []),
+            "retrieved_at": source_dataset.retrieved_at.isoformat(),
+            "provenance_note": source_dataset.provenance_note,
+        },
+        validation_status=source_validation.status,
+        validation_notes=validation_notes,
+    )
+
+
 def _uses_documentation_as_primary_source(source_name: str, provenance_note: str) -> bool:
     primary_source = f"{source_name} {provenance_note}".casefold()
     return "notebooklm" in primary_source or "mcp" in primary_source
@@ -118,3 +160,20 @@ def _has_limited_coverage(coverage_summary: dict[str, object]) -> bool:
         or coverage_summary.get("missing_rounds")
         or coverage_summary.get("excluded_rounds")
     )
+
+
+def _build_coverage_summary(
+    source_dataset: SourceDataset,
+    status: ValidationStatus,
+) -> dict[str, object]:
+    covered_rounds = list(source_dataset.covered_rounds or [])
+    has_explicit_coverage = source_dataset.covered_rounds is not None
+    return {
+        "season": source_dataset.season,
+        "covered_rounds": covered_rounds,
+        "covered_round_count": len(covered_rounds),
+        "partial": status is ValidationStatus.LIMITED,
+        "coverage_gap": not has_explicit_coverage,
+        "missing_rounds": [],
+        "excluded_rounds": [],
+    }
