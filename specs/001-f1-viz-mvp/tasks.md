@@ -35,9 +35,9 @@
 
 ### Shared domain and validation core
 
-- [ ] T005 Create the conversation request and visualization intent domain models in `src/beautivizf1/domain/conversation_request.py` and `src/beautivizf1/domain/visualization_intent.py`
-- [ ] T006 [P] Create the format selection and artifact bundle domain models in `src/beautivizf1/domain/format_selection.py` and `src/beautivizf1/domain/artifact_bundle.py`
-- [ ] T007 [P] Create the source and validated dataset domain models in `src/beautivizf1/domain/source_dataset.py` and `src/beautivizf1/domain/validated_visualization_dataset.py`
+- [X] T005 Create the conversation request and visualization intent domain models in `src/beautivizf1/domain/conversation_request.py` and `src/beautivizf1/domain/visualization_intent.py`
+- [X] T006 [P] Create the format selection and artifact bundle domain models in `src/beautivizf1/domain/format_selection.py` and `src/beautivizf1/domain/artifact_bundle.py`
+- [X] T007 [P] Create the source and validated dataset domain models in `src/beautivizf1/domain/source_dataset.py` and `src/beautivizf1/domain/validated_visualization_dataset.py`
 - [ ] T008 Implement the generic F1 provider interface in `src/beautivizf1/data_sources/f1_provider.py`
 - [ ] T009 Implement shared request validation rules in `src/beautivizf1/validation/request_rules.py`
 - [ ] T010 [P] Implement shared data validation and provenance rules in `src/beautivizf1/validation/data_rules.py`
