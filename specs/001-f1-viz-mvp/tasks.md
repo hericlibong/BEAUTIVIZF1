@@ -74,11 +74,11 @@
 
 - [X] T020 [P] [US1] Add unit tests for intent parsing and clarification outcomes in `tests/unit/test_intent_parser.py`
 - [X] T021 [P] [US1] Add an integration test for natural-language intake and interpretation in `tests/integration/test_chat_interpretation_flow.py`
-- [ ] T022 [US1] Document manual validation for natural-language interpretation in `docs/validation/chat_interpretation.md`
+- [X] T022 [US1] Document manual validation for natural-language interpretation in `docs/validation/chat_interpretation.md`
 
 ### Block 14: Documentation minimale utile
 
-- [ ] T023 [US1] Add usage documentation for expressing a need in `docs/usage/chat_input.md`
+- [X] T023 [US1] Add usage documentation for expressing a need in `docs/usage/chat_input.md`
 
 **Checkpoint**: Le chatbot comprend un besoin ou demande une clarification simple, sans encore lancer de génération.
 
