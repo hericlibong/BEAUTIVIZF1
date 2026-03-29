@@ -102,7 +102,7 @@
 ### Block 13: Tests et validations MVP
 
 - [X] T027 [P] [US2] Add unit tests for format proposal and choice gating in `tests/unit/test_format_selection_flow.py`
-- [ ] T028 [P] [US2] Add an integration test for interpretation-to-choice flow in `tests/integration/test_format_selection_flow.py`
+- [X] T028 [P] [US2] Add an integration test for interpretation-to-choice flow in `tests/integration/test_format_selection_flow.py`
 - [ ] T029 [US2] Document manual validation for explicit format choice in `docs/validation/format_selection.md`
 
 ### Block 14: Documentation minimale utile
