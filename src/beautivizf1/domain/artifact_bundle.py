@@ -14,6 +14,3 @@ class ArtifactBundle:
     verification_notes: Path
     core_schema_version: str
     created_at: datetime
-
-
-VisualizationBundle = ArtifactBundle
