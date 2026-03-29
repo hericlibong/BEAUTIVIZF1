@@ -129,11 +129,11 @@
 
 ### Block 8: Transformations heatmap
 
-- [ ] T033 [P] [US3] Implement the heatmap transformation in `src/beautivizf1/transforms/heatmap_transform.py`
+- [X] T033 [P] [US3] Implement the heatmap transformation in `src/beautivizf1/transforms/heatmap_transform.py`
 
 ### Block 9: Transformations line chart race
 
-- [ ] T034 [P] [US3] Implement the line chart race transformation in `src/beautivizf1/transforms/line_chart_race_transform.py`
+- [X] T034 [P] [US3] Implement the line chart race transformation in `src/beautivizf1/transforms/line_chart_race_transform.py`
 
 ### Block 10: Rendu D3.js
 
@@ -150,7 +150,7 @@
 
 ### Block 13: Tests et validations MVP
 
-- [ ] T039 [P] [US3] Add unit tests for heatmap and line chart race transformations in `tests/unit/test_heatmap_transform.py` and `tests/unit/test_line_chart_race_transform.py`
+- [X] T039 [P] [US3] Add unit tests for heatmap and line chart race transformations in `tests/unit/test_heatmap_transform.py` and `tests/unit/test_line_chart_race_transform.py`
 - [ ] T040 [P] [US3] Add an integration test for the heatmap generation flow in `tests/integration/test_heatmap_generation_flow.py`
 - [ ] T041 [P] [US3] Add an integration test for the line chart race generation flow in `tests/integration/test_line_chart_race_generation_flow.py`
 - [ ] T042 [P] [US3] Add an integration test for bundle and embed outputs in `tests/integration/test_bundle_and_embed_flow.py`
