@@ -46,10 +46,10 @@
 
 ### Foundational verification
 
-- [ ] T013 [P] Add contract tests for conversation request and format selection in `tests/contract/test_conversation_request_contract.py`
-- [ ] T014 [P] Add contract tests for the output bundle in `tests/contract/test_output_bundle_contract.py`
+- [X] T013 [P] Add contract tests for conversation request and format selection in `tests/contract/test_conversation_request_contract.py`
+- [X] T014 [P] Add contract tests for the output bundle in `tests/contract/test_output_bundle_contract.py`
 - [ ] T015 [P] Add unit tests for shared request and data rules in `tests/unit/test_request_rules.py` and `tests/unit/test_data_rules.py`
-- [ ] T016 [P] Add shared fixtures for conversation requests and format selections in `tests/fixtures/requests/natural_language_need.json` and `tests/fixtures/selections/explicit_choice.json`
+- [X] T016 [P] Add shared fixtures for conversation requests and format selections in `tests/fixtures/requests/natural_language_need.json` and `tests/fixtures/selections/explicit_choice.json`
 
 **Checkpoint**: Le socle commun est prêt. Les user stories peuvent maintenant commencer.
 
