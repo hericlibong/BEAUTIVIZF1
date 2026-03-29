@@ -92,7 +92,7 @@
 
 ### Block 4: Présentation des deux formats disponibles
 
-- [ ] T024 [US2] Implement the format proposal step in `src/beautivizf1/chat.py`
+- [X] T024 [US2] Implement the format proposal step in `src/beautivizf1/chat.py`
 
 ### Block 5: Recueil du choix explicite utilisateur
 
@@ -101,7 +101,7 @@
 
 ### Block 13: Tests et validations MVP
 
-- [ ] T027 [P] [US2] Add unit tests for format proposal and choice gating in `tests/unit/test_format_selection_flow.py`
+- [X] T027 [P] [US2] Add unit tests for format proposal and choice gating in `tests/unit/test_format_selection_flow.py`
 - [ ] T028 [P] [US2] Add an integration test for interpretation-to-choice flow in `tests/integration/test_format_selection_flow.py`
 - [ ] T029 [US2] Document manual validation for explicit format choice in `docs/validation/format_selection.md`
 
