@@ -1,18 +1,32 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Sequence
 
 from beautivizf1.data_sources.f1_provider import F1Provider
 from beautivizf1.domain.artifact_bundle import ArtifactBundle
+from beautivizf1.domain.conversation_request import ConversationRequest
 from beautivizf1.domain.format_selection import FormatSelection
 from beautivizf1.domain.source_dataset import SourceDataset
+from beautivizf1.domain.visualization_intent import VisualizationIntent
 from beautivizf1.domain.validated_visualization_dataset import ValidationStatus
+from beautivizf1.interpretation.intent_parser import (
+    InterpretationOutcome,
+    parse_intent,
+)
 from beautivizf1.outputs.bundle_writer import build_artifact_bundle
 from beautivizf1.validation.data_rules import DataValidationResult, validate_source_dataset
 from beautivizf1.validation.request_rules import (
     RequestValidationResult,
     validate_generation_requirements,
 )
+
+
+@dataclass(slots=True)
+class InterpretationFlowResult:
+    outcome: InterpretationOutcome
+    request: ConversationRequest
+    intent: VisualizationIntent | None
+    notes: list[str] = field(default_factory=list)
 
 
 @dataclass(slots=True)
@@ -28,13 +42,22 @@ class VisualizationService:
     def __init__(
         self,
         *,
-        provider: F1Provider,
-        output_dir: Path,
+        provider: F1Provider | None = None,
+        output_dir: Path | None = None,
         core_schema_version: str = "1.0",
     ) -> None:
         self.provider = provider
         self.output_dir = output_dir
         self.core_schema_version = core_schema_version
+
+    def interpret_request(self, request: ConversationRequest) -> InterpretationFlowResult:
+        parsing_result = parse_intent(request)
+        return InterpretationFlowResult(
+            outcome=parsing_result.outcome,
+            request=request,
+            intent=parsing_result.intent,
+            notes=list(parsing_result.notes),
+        )
 
     def prepare_generation(
         self,
@@ -45,6 +68,9 @@ class VisualizationService:
         season: int,
         covered_rounds: Sequence[int] | None = None,
     ) -> GenerationPreparation:
+        if self.provider is None or self.output_dir is None:
+            raise ValueError("VisualizationService requires a provider and output_dir.")
+
         selection_validation = validate_generation_requirements(selection)
         if not selection_validation.generation_allowed or selection is None:
             return GenerationPreparation(selection_validation=selection_validation)

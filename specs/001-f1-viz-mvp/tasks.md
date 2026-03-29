@@ -68,12 +68,12 @@
 ### Block 3: Interprétation de la demande utilisateur
 
 - [X] T018 [US1] Implement intent parsing for analytic and editorial needs in `src/beautivizf1/interpretation/intent_parser.py`
-- [ ] T019 [US1] Connect chat intake to interpretation and clarification outcomes in `src/beautivizf1/chat.py` and `src/beautivizf1/services/visualization_service.py`
+- [X] T019 [US1] Connect chat intake to interpretation and clarification outcomes in `src/beautivizf1/chat.py` and `src/beautivizf1/services/visualization_service.py`
 
 ### Block 13: Tests et validations MVP
 
 - [X] T020 [P] [US1] Add unit tests for intent parsing and clarification outcomes in `tests/unit/test_intent_parser.py`
-- [ ] T021 [P] [US1] Add an integration test for natural-language intake and interpretation in `tests/integration/test_chat_interpretation_flow.py`
+- [X] T021 [P] [US1] Add an integration test for natural-language intake and interpretation in `tests/integration/test_chat_interpretation_flow.py`
 - [ ] T022 [US1] Document manual validation for natural-language interpretation in `docs/validation/chat_interpretation.md`
 
 ### Block 14: Documentation minimale utile
