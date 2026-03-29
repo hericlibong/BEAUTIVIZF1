@@ -103,11 +103,11 @@
 
 - [X] T027 [P] [US2] Add unit tests for format proposal and choice gating in `tests/unit/test_format_selection_flow.py`
 - [X] T028 [P] [US2] Add an integration test for interpretation-to-choice flow in `tests/integration/test_format_selection_flow.py`
-- [ ] T029 [US2] Document manual validation for explicit format choice in `docs/validation/format_selection.md`
+- [X] T029 [US2] Document manual validation for explicit format choice in `docs/validation/format_selection.md`
 
 ### Block 14: Documentation minimale utile
 
-- [ ] T030 [US2] Add usage documentation for choosing between heatmap and line chart race in `docs/usage/format_selection.md`
+- [X] T030 [US2] Add usage documentation for choosing between heatmap and line chart race in `docs/usage/format_selection.md`
 
 **Checkpoint**: Le système suit correctement le flux besoin -> interprétation -> proposition des formats -> choix explicite, sans génération prématurée.
 
