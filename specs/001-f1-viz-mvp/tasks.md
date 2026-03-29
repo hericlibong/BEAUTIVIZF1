@@ -63,7 +63,7 @@
 
 ### Block 2: Entrée conversationnelle légère (`chat.py`)
 
-- [ ] T017 [US1] Implement the lightweight chat entry flow in `src/beautivizf1/chat.py`
+- [X] T017 [US1] Implement the lightweight chat entry flow in `src/beautivizf1/chat.py`
 
 ### Block 3: Interprétation de la demande utilisateur
 
