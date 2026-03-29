@@ -3,12 +3,20 @@ from datetime import datetime, timezone
 from uuid import uuid4
 
 from beautivizf1.domain.conversation_request import ConversationRequest
-from beautivizf1.domain.format_selection import MVP_AVAILABLE_FORMATS, VisualizationFormat
+from beautivizf1.domain.format_selection import (
+    MVP_AVAILABLE_FORMATS,
+    FormatSelection,
+    VisualizationFormat,
+)
 from beautivizf1.services.visualization_service import (
     InterpretationFlowResult,
     VisualizationService,
 )
 from beautivizf1.interpretation.intent_parser import InterpretationOutcome
+from beautivizf1.validation.request_rules import (
+    RequestDecision,
+    validate_explicit_format_choice,
+)
 
 
 @dataclass(slots=True)
@@ -26,6 +34,15 @@ class FormatProposal:
     proposal_note: str
     options: tuple[FormatProposalOption, ...]
     available_formats: tuple[VisualizationFormat, ...] = MVP_AVAILABLE_FORMATS
+    generation_allowed: bool = False
+    next_step: str = "explicit_format_choice_required"
+
+
+@dataclass(slots=True)
+class FormatChoiceResult:
+    status: str
+    selection: FormatSelection | None
+    notes: list[str]
     generation_allowed: bool = False
     next_step: str = "explicit_format_choice_required"
 
@@ -84,6 +101,48 @@ def propose_formats(interpretation: InterpretationFlowResult) -> FormatProposal:
                 rationale=_build_line_chart_race_rationale(scope_context),
             ),
         ),
+    )
+
+
+def handle_format_choice(
+    proposal: FormatProposal,
+    user_choice: str | None,
+    *,
+    selection_id: str | None = None,
+    choice_confirmed_at: datetime | None = None,
+) -> FormatChoiceResult:
+    validation_result = validate_explicit_format_choice(
+        user_choice,
+        available_formats=proposal.available_formats,
+    )
+    if validation_result.decision is RequestDecision.CLARIFY:
+        return FormatChoiceResult(
+            status="missing",
+            selection=None,
+            notes=list(validation_result.notes),
+        )
+
+    if validation_result.decision is RequestDecision.REJECT:
+        return FormatChoiceResult(
+            status="invalid",
+            selection=None,
+            notes=list(validation_result.notes),
+        )
+
+    selection = FormatSelection(
+        selection_id=selection_id or f"sel-{uuid4().hex}",
+        intent_id=proposal.intent_id,
+        available_formats=proposal.available_formats,
+        chosen_format=validation_result.chosen_format,
+        choice_confirmed_at=choice_confirmed_at or datetime.now(timezone.utc),
+        proposal_note=proposal.proposal_note,
+    )
+    return FormatChoiceResult(
+        status="selected",
+        selection=selection,
+        notes=[],
+        generation_allowed=True,
+        next_step="generation_can_be_prepared",
     )
 
 

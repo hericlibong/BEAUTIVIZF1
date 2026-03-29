@@ -2,7 +2,11 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 
 from beautivizf1.domain.conversation_request import ConversationRequest
-from beautivizf1.domain.format_selection import MVP_AVAILABLE_FORMATS, FormatSelection
+from beautivizf1.domain.format_selection import (
+    MVP_AVAILABLE_FORMATS,
+    FormatSelection,
+    VisualizationFormat,
+)
 from beautivizf1.domain.visualization_intent import VisualizationIntent
 
 
@@ -15,6 +19,14 @@ class RequestDecision(StrEnum):
 @dataclass(slots=True)
 class RequestValidationResult:
     decision: RequestDecision
+    notes: list[str] = field(default_factory=list)
+    generation_allowed: bool = False
+
+
+@dataclass(slots=True)
+class FormatChoiceValidationResult:
+    decision: RequestDecision
+    chosen_format: VisualizationFormat | None = None
     notes: list[str] = field(default_factory=list)
     generation_allowed: bool = False
 
@@ -94,6 +106,31 @@ def validate_visualization_intent(
     return RequestValidationResult(decision=RequestDecision.EXPLOITABLE)
 
 
+def validate_explicit_format_choice(
+    user_choice: str | None,
+    *,
+    available_formats: tuple[VisualizationFormat, ...] = MVP_AVAILABLE_FORMATS,
+) -> FormatChoiceValidationResult:
+    if user_choice is None or not user_choice.strip():
+        return FormatChoiceValidationResult(
+            decision=RequestDecision.CLARIFY,
+            notes=["An explicit format choice is required before generation."],
+        )
+
+    normalized_choice = _normalize_format_choice(user_choice)
+    if normalized_choice is None or normalized_choice not in available_formats:
+        return FormatChoiceValidationResult(
+            decision=RequestDecision.REJECT,
+            notes=["The format choice must be either heatmap or line chart race."],
+        )
+
+    return FormatChoiceValidationResult(
+        decision=RequestDecision.EXPLOITABLE,
+        chosen_format=normalized_choice,
+        generation_allowed=True,
+    )
+
+
 def validate_generation_requirements(
     selection: FormatSelection | None,
 ) -> RequestValidationResult:
@@ -119,3 +156,15 @@ def validate_generation_requirements(
         decision=RequestDecision.EXPLOITABLE,
         generation_allowed=True,
     )
+
+
+def _normalize_format_choice(choice: str) -> VisualizationFormat | None:
+    normalized_choice = choice.strip().casefold().replace("-", " ").replace("_", " ")
+    normalized_choice = " ".join(normalized_choice.split())
+
+    if normalized_choice == "heatmap":
+        return VisualizationFormat.HEATMAP
+    if normalized_choice == "line chart race":
+        return VisualizationFormat.LINE_CHART_RACE
+
+    return None

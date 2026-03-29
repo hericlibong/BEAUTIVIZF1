@@ -68,12 +68,12 @@ class VisualizationService:
         season: int,
         covered_rounds: Sequence[int] | None = None,
     ) -> GenerationPreparation:
-        if self.provider is None or self.output_dir is None:
-            raise ValueError("VisualizationService requires a provider and output_dir.")
-
         selection_validation = validate_generation_requirements(selection)
         if not selection_validation.generation_allowed or selection is None:
             return GenerationPreparation(selection_validation=selection_validation)
+
+        if self.provider is None or self.output_dir is None:
+            raise ValueError("VisualizationService requires a provider and output_dir.")
 
         source_dataset = self.provider.fetch_dataset(
             dataset_id=dataset_id,

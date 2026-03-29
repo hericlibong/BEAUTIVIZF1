@@ -96,8 +96,8 @@
 
 ### Block 5: Recueil du choix explicite utilisateur
 
-- [ ] T025 [US2] Implement explicit format choice handling in `src/beautivizf1/chat.py`
-- [ ] T026 [US2] Enforce the no-generation-before-choice rule in `src/beautivizf1/validation/request_rules.py` and `src/beautivizf1/services/visualization_service.py`
+- [X] T025 [US2] Implement explicit format choice handling in `src/beautivizf1/chat.py`
+- [X] T026 [US2] Enforce the no-generation-before-choice rule in `src/beautivizf1/validation/request_rules.py` and `src/beautivizf1/services/visualization_service.py`
 
 ### Block 13: Tests et validations MVP
 
